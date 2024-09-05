@@ -1,25 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useEffect, useState} from "react";
+import Cookies from "universal-cookie";
+import {v4} from "uuid"
+import Sidebar from "./Components/Sidebar";
+import Content from "./Components/Content";
+import Login from "./Components/Login";
+const cookies = new Cookies();
+
 
 function App() {
+  const [userId, setUserId] = useState(false);
+  useEffect(() => {
+    if (typeof cookies.get("id") == "undefined") {
+      setUserId(false)
+    }
+    else {
+      setUserId(cookies.get("id"));
+    }
+
+  }, [])
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="flex w-auto h-[100vh]">
+      {
+        userId ? (
+          <>
+            <Sidebar />
+            <Content />
+          </>
+        ) : (
+          <Login />
+        )
+      }
+
     </div>
-  );
+  )
+  
 }
 
 export default App;
